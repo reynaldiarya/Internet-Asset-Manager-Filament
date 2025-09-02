@@ -12,28 +12,49 @@ class DashboardOverview extends StatsOverviewWidget
 {
     protected function getStats(): array
     {
+        // Domains
         $totalActiveDomains = Domain::where('status', 'active')
             ->where('expiry_date', '>', now()->addDays(30))
             ->count();
+
         $totalExpiringDomains = Domain::where('status', 'active')
             ->where('expiry_date', '<=', now()->addDays(30))
             ->count();
+
+        $totalExpiringDomainsCost = Domain::where('status', 'active')
+            ->where('expiry_date', '<=', now()->addDays(30))
+            ->sum('renewal_cost');
+
         $totalExpiredDomains = Domain::where('status', 'inactive')->count();
 
+        // Hostings
         $totalActiveHostings = Hosting::where('status', 'active')
             ->where('expiry_date', '>', now()->addDays(30))
             ->count();
+
         $totalExpiringHostings = Hosting::where('status', 'active')
             ->where('expiry_date', '<=', now()->addDays(30))
             ->count();
+
+        $totalExpiringHostingsCost = Hosting::where('status', 'active')
+            ->where('expiry_date', '<=', now()->addDays(30))
+            ->sum('renewal_cost');
+
         $totalExpiredHostings = Hosting::where('status', 'inactive')->count();
 
+        // VPS
         $totalActiveVps = Vps::where('status', 'active')
             ->where('expiry_date', '>', now()->addDays(30))
             ->count();
+
         $totalExpiringVps = Vps::where('status', 'active')
             ->where('expiry_date', '<=', now()->addDays(30))
             ->count();
+
+        $totalExpiringVpsCost = Vps::where('status', 'active')
+            ->where('expiry_date', '<=', now()->addDays(30))
+            ->sum('renewal_cost');
+
         $totalExpiredVps = Vps::where('status', 'inactive')->count();
 
         return [
@@ -45,7 +66,7 @@ class DashboardOverview extends StatsOverviewWidget
                 ->icon('heroicon-o-globe-alt'),
 
             Stat::make('Expiring Domains', number_format($totalExpiringDomains))
-                ->description('Expiring within 30 days')
+                ->description('Within 30 days – Est. Rp '.number_format($totalExpiringDomainsCost, 0, ',', '.'))
                 ->descriptionIcon('heroicon-o-clock')
                 ->color('warning')
                 ->icon('heroicon-o-exclamation-circle'),
@@ -64,7 +85,7 @@ class DashboardOverview extends StatsOverviewWidget
                 ->icon('heroicon-o-server'),
 
             Stat::make('Expiring Hostings', number_format($totalExpiringHostings))
-                ->description('Expiring within 30 days')
+                ->description('Within 30 days – Est. Rp '.number_format($totalExpiringHostingsCost, 0, ',', '.'))
                 ->descriptionIcon('heroicon-o-clock')
                 ->color('warning')
                 ->icon('heroicon-o-exclamation-circle'),
@@ -83,7 +104,7 @@ class DashboardOverview extends StatsOverviewWidget
                 ->icon('heroicon-o-server-stack'),
 
             Stat::make('Expiring VPS', number_format($totalExpiringVps))
-                ->description('Expiring soon')
+                ->description('Within 30 days – Est. Rp '.number_format($totalExpiringVpsCost, 0, ',', '.'))
                 ->descriptionIcon('heroicon-o-clock')
                 ->color('warning')
                 ->icon('heroicon-o-exclamation-triangle'),
