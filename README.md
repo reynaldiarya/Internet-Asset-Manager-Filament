@@ -11,12 +11,6 @@ A centralized management platform for tracking and organizing internet infrastru
   </a>
 </p>
 
-## Compatibility
-- PHP >= 8.2
-- Laravel 12.x
-- Node.js >= 18
-- npm >= 9
-
 ## Description
 
 Internet Asset Manager provides a structured approach to monitoring domain portfolios, hosting subscriptions, and VPS instances from a single administrative interface. The platform addresses the operational challenge of tracking renewal dates, costs, and credentials across multiple service providers.
@@ -58,7 +52,7 @@ Designed for agencies, freelancers, and organizations managing multiple client a
 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/internet-asset-manager-filament.git
+git clone https://github.com/Akselerasi-Prima-Digital/internet-asset-manager-filament.git
 cd internet-asset-manager-filament
 ```
 
